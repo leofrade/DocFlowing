@@ -5,6 +5,7 @@ and parser options for both MarkItDown and Marker engines.
 """
 
 import os
+from pathlib import Path
 from typing import Optional, Set
 from dotenv import load_dotenv
 from pydantic import BaseModel, Field
@@ -52,6 +53,10 @@ class RouterConfig(BaseModel):
         default="INFO",
         description="Nível de log padrão (DEBUG, INFO, WARNING, ERROR)"
     )
+    default_output_dir: str = Field(
+        default_factory=lambda: str(Path.home() / "Desktop"),
+        description="Diretório padrão para salvar os arquivos Markdown convertidos (Mesa/Desktop)"
+    )
 
     @classmethod
     def from_env(cls) -> "RouterConfig":
@@ -63,6 +68,7 @@ class RouterConfig(BaseModel):
         marker_key = os.getenv("MARKER_API_KEY")
         marker_timeout = os.getenv("MARKER_TIMEOUT_SECONDS")
         log_lvl = os.getenv("OMNI_LOG_LEVEL", "INFO")
+        output_dir = os.getenv("OMNI_OUTPUT_DIR") or str(Path.home() / "Desktop")
 
         return cls(
             min_chars_per_page=int(min_chars) if min_chars else 100,
@@ -72,6 +78,7 @@ class RouterConfig(BaseModel):
             marker_api_key=marker_key,
             marker_timeout_seconds=float(marker_timeout) if marker_timeout else 30.0,
             log_level=log_lvl,
+            default_output_dir=output_dir,
         )
 
 

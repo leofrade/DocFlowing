@@ -48,16 +48,17 @@ def cmd_convert(args: argparse.Namespace) -> int:
             print(f"Error / Fallback:   {result.error_message}")
         print("-" * 50)
 
+        # Salva por padrão na Mesa (Desktop) para fácil localização, nunca na pasta de origem do arquivo
         if args.output:
             out_path = Path(args.output)
-            out_path.write_text(result.markdown, encoding="utf-8")
-            print(f"Saved Markdown to '{out_path}'")
         else:
-            print("\n--- Markdown Output Preview (first 500 chars) ---")
-            preview = result.markdown[:500]
-            print(preview)
-            if len(result.markdown) > 500:
-                print("... [truncated]")
+            dest_dir = Path(default_config.default_output_dir)
+            if not dest_dir.exists():
+                dest_dir = Path.home() / "Desktop"
+            out_path = dest_dir / f"{file_path.stem}.md"
+
+        out_path.write_text(result.markdown, encoding="utf-8")
+        print(f"Salvo com sucesso na Mesa: '{out_path}'")
 
         return 0
     except Exception as exc:
@@ -120,7 +121,7 @@ def build_parser() -> argparse.ArgumentParser:
     convert_parser.add_argument(
         "-o", "--output",
         default=None,
-        help="File path to save Markdown output",
+        help="Caminho personalizado para salvar o Markdown (padrão: salvar automaticamente na Mesa/Desktop)",
     )
 
     # inspect
