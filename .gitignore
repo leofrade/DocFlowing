@@ -29,3 +29,9 @@ htmlcov/
 .idea/
 .vscode/
 *.swp
+
+# Automações e scripts pessoais
+pipeline.py
+ocr_batch.py
+personal/
+scripts/personal/

@@ -5,7 +5,7 @@ description = "Orquestrador Inteligente MarkItDown + Marker para pipelines RAG"
 readme = "README.md"
 requires-python = ">=3.10"
 authors = [
-    { name = "Leo Frade", email = "leofrade@gmail.com" }
+    { name = "Leonardo Frade" }
 ]
 dependencies = [
     "pydantic>=2.0.0",
